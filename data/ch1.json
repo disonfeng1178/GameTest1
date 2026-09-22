@@ -1,0 +1,20 @@
+{
+  "title": "嗟仙 第一章 灵气不是气",
+  "scenes": [
+    {"bg": "res://assets/bg/shop_sunset.png", "chars": [], "focus": "", "speaker": "旁白", "text": "谪仙国，礼仙州，求仙城，黄狗县——卤鸡脚店。夕阳西下，打烊时分。"},
+    {"bg": "res://assets/bg/shop_sunset.png", "chars": ["laohuang"], "focus": "laohuang", "speaker": "旁白", "text": "老黄头两只鸡脚吃了五个时辰，从开店坐到打烊。伙计也没催——做得体面，乡里乡亲。"},
+    {"bg": "res://assets/bg/shop_sunset.png", "chars": ["huoji", "laohuang"], "focus": "huoji", "speaker": "店伙计", "text": "老黄头，差不多了，太阳落山了，咱们要打烊了。"},
+    {"bg": "res://assets/bg/shop_sunset.png", "chars": ["huoji", "laohuang"], "focus": "laohuang", "speaker": "老黄头", "text": "你们店主小索子，我最近没怎么见过啊？还在研究仙人的事？"},
+    {"bg": "res://assets/bg/shop_sunset.png", "chars": ["huoji"], "focus": "huoji", "speaker": "店伙计", "text": "两年半前东家声称见到了仙人，就跟中了魔一样，一有空就往小黑屋里钻。"},
+    {"bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "灵气居然不是气体！我是穿越者，本硕博理工科……穿到修仙世界，却不能修炼？"},
+    {"bg": "res://assets/bg/forest.png", "chars": ["nvxiu"], "focus": "", "speaker": "旁白", "text": "直到两年半前，进树林捉野鸡，膝盖中了一箭。远处持弓的修仙者，快如残影。"},
+    {"bg": "res://assets/bg/forest.png", "chars": ["nvxiu", "xiaosuo"], "focus": "nvxiu", "speaker": "女修", "text": "这个是灵石，我送你当赔礼啦！一枚灵石值好多好多钱，保你一辈子衣食无忧！"},
+    {"bg": "res://assets/bg/forest.png", "chars": ["nvxiu", "xiaosuo"], "focus": "xiaosuo", "speaker": "萧索", "text": "十几岁少女的语调……仙凡有别，我该立刻叩谢？若有半分不敬，岂不灰飞烟灭？"},
+    {"bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "", "speaker": "旁白", "text": "他研究灵石快两年：托手心、放胸口、含嘴里……都没感受到灵气。灵气，到底是什么？"},
+    {"bg": "res://assets/bg/dark_room.png", "chars": [], "focus": "", "speaker": "系统", "text": "【第一章·完】灵石无价，一枚可买县尉官位，而你有五块。求知，还是做大做强？", "choice": [
+      {"label": "继续探索灵气本源", "affinity": {"求知": 10}},
+      {"label": "先把卤鸡脚店做大做强", "affinity": {"体面": 10}},
+      {"label": "找那位女修问个清楚", "affinity": {"因果": 10}}
+    ]}
+  ]
+}
