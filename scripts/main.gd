@@ -13,13 +13,13 @@ var current_bg: String = ""
 
 const CHAR_PATH := "res://assets/chars/%s.png"
 const SPEAKER_COLOR := {
-	"旁白": Color(0.75, 0.78, 0.9),
+	"旁白": Color(0.82, 0.8, 0.72),
 	"店伙计": Color(0.95, 0.8, 0.55),
-	"老黄头": Color(0.95, 0.75, 0.5),
-	"萧索": Color(0.55, 0.8, 1.0),
-	"萧索（内心）": Color(0.55, 0.8, 1.0),
-	"女修": Color(0.6, 1.0, 0.85),
-	"系统": Color(1.0, 0.9, 0.5),
+	"老黄头": Color(0.92, 0.72, 0.48),
+	"萧索": Color(0.62, 0.82, 1.0),
+	"萧索（内心）": Color(0.62, 0.82, 1.0),
+	"女修": Color(0.65, 0.95, 0.82),
+	"系统": Color(0.98, 0.84, 0.5),
 }
 
 @onready var bg: TextureRect = $BG

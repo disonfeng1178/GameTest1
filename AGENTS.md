@@ -15,6 +15,13 @@
 - 立绘：`assets/chars/<名>.png` 600x900，透明底，半身；背景 `assets/bg/*.png` 1280x720。
 - 玩法：`scripts/main.gd` 对外只读上述字段，新增字段必须先更新本契约并通知 plot。
 
+## Skill 学习映射（各学各的）
+
+- `gameplay` 学 `agentic-gamedev-skills` 子集：`running-headless-godot` + `scaffolding-godot-mini-games`（搭/跑/导出规范）+ `maximizing-game-feel`（打击/反馈/转场）+ Godot 程序化音频（对话 blip/选项/氛围）。不学 web/crisp 相关。
+- `art` 学 `agentic-gamedev-skills` 子集：`directing-game-visuals`（层级/配色/构图/反馈）+ `styling-typography`（可读字体/标题/字号层级）。风格目标：上古史诗感，参考古剑奇谭人物肖像——端庄华贵、纹饰精细、质感厚重，不走 Q 版纸片风。
+- `plot` 学 `agentic-gamedev-skills` 子集：`exploring-game-design-space`（多分支发散）+ `stress-testing-game-concepts`（审分支逻辑/数值崩点）。另借鉴 `rpg-maker-agent` 的思路：干跑（dry-run）+ 跨文件一致性校验（角色/背景名/选项引用），但不装它（它是 RPG Maker MV/MZ JSON 专用，跟 Godot 无关）。
+- 跨角色新增 skill 需求，先记到本节，再由 lead 批准，避免各学各的重叠污染。
+
 ## Git 工作流
 
 - 分支：`role/plot`、`role/art`、`role/gameplay`，都从 `main` 拉。只在自己目录+文档里改。
