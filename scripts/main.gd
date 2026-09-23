@@ -226,52 +226,120 @@ func _spawn_chars(s: Dictionary) -> void:
 	var focus: String = str(s.get("focus", ""))
 	var n: int = names.size()
 	var vw: float = 1920.0
+	var ground_y: float = 760.0
 	for k in range(n):
 		var char_name: String = str(names[k])
+		var is_focus: bool = focus == "" or char_name == focus
+		var h: float = 560.0 if is_focus else 500.0
+		var w: float = h * 0.62
 		var holder := Control.new()
-		holder.custom_minimum_size = Vector2(300, 620)
+		holder.custom_minimum_size = Vector2(w, h + 60)
 		holder.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var shadow := ColorRect.new()
 		shadow.color = Color(0, 0, 0, 0.35)
-		shadow.position = Vector2(55, 560)
-		shadow.size = Vector2(190, 30)
+		shadow.position = Vector2(w * 0.18, h - 18)
+		shadow.size = Vector2(w * 0.64, 26)
 		shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		holder.add_child(shadow)
 		var tr := TextureRect.new()
 		tr.texture = load(CHAR_PATH % char_name)
 		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		tr.custom_minimum_size = Vector2(300, 560)
+		tr.custom_minimum_size = Vector2(w, h)
 		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if is_focus:
+			tr.modulate = Color(1.02, 1.0, 0.97, 1.0)
+		else:
+			tr.modulate = Color(0.55, 0.55, 0.6, 1.0)
 		holder.add_child(tr)
 		var pos_x: float
 		if n == 1:
-			pos_x = vw / 2.0 - 150.0
+			pos_x = vw / 2.0 - w / 2.0 + 60.0
 		elif n == 2:
-			pos_x = vw / 2.0 - 380.0 if k == 0 else vw / 2.0 + 80.0
+			pos_x = vw / 2.0 - 420.0 if k == 0 else vw / 2.0 + 120.0
 		else:
-			pos_x = vw / 2.0 - float(n) * 170.0 + k * 340.0
-		holder.position = Vector2(pos_x, 130)
-		holder.size = Vector2(300, 620)
-		if focus != "" and char_name != focus:
-			holder.modulate = Color(0.45, 0.45, 0.5, 1.0)
-		else:
+			pos_x = vw / 2.0 - float(n) * (w / 2.0 + 20.0) + k * (w + 40.0)
+		var jitter: float = 0.0 if n == 1 else (float((k * 37) % 41) - 20.0)
+		holder.position = Vector2(pos_x + jitter, ground_y - h + 40)
+		holder.size = Vector2(w, h + 60)
+		holder.rotation = deg_to_rad(-1.5 if k % 2 == 0 else 1.2)
+		holder.pivot_offset = Vector2(w / 2.0, h)
+		if is_focus:
 			holder.modulate = Color(1, 1, 1, 0)
+		else:
+			holder.modulate = Color(1, 1, 1, 1)
+		holder.set_meta("base_y", ground_y - h + 20)
 		stage.add_child(holder)
 		var tw: Tween = create_tween().set_parallel(true)
-		tw.tween_property(holder, "modulate:a", 1.0 if (focus == "" or char_name == focus) else 0.85, 0.4)
-		tw.tween_property(holder, "position:y", 110.0, 0.4).from(140.0)
-		var target_scale := Vector2(1.04, 1.04) if (focus == "" or char_name == focus) else Vector2(0.96, 0.96)
-		holder.pivot_offset = Vector2(150, 620)
-		tw.tween_property(holder, "scale", target_scale, 0.4)
-		if focus == "" or char_name == focus:
+		tw.tween_property(holder, "modulate:a", 1.0 if is_focus else 0.9, 0.45)
+		tw.tween_property(holder, "position:y", ground_y - h + 20, 0.45).from(ground_y - h + 70)
+		var target_scale := Vector2(1.03, 1.03) if is_focus else Vector2(0.97, 0.97)
+		tw.tween_property(holder, "scale", target_scale, 0.45)
+		if is_focus:
 			_breathe(holder)
 
 func _breathe(holder: Control) -> void:
+	if not holder.has_meta("base_y"):
+		return
+	var base_y: float = float(holder.get_meta("base_y")) + 20.0
 	var tw: Tween = create_tween().set_loops()
-	tw.tween_property(holder, "position:y", 104.0, 2.2).set_trans(Tween.TRANS_SINE)
-	tw.tween_property(holder, "position:y", 110.0, 2.2).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(holder, "position:y", base_y - 6.0, 2.2).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(holder, "position:y", base_y, 2.2).set_trans(Tween.TRANS_SINE)
+
+func _choice_stage_react(opt: Dictionary) -> void:
+	var is_death: bool = opt.has("death")
+	for holder in stage.get_children():
+		if not (holder is Control):
+			continue
+		var h: Control = holder
+		var tw: Tween = h.create_tween().set_parallel(true)
+		if is_death:
+			tw.tween_property(h, "rotation", h.rotation + 0.06, 0.12)
+			tw.tween_property(h, "modulate:a", 0.25, 0.5)
+		else:
+			var up: Vector2 = h.scale * 1.07
+			tw.tween_property(h, "scale", up, 0.14).set_trans(Tween.TRANS_BACK)
+			tw.chain().tween_property(h, "scale", Vector2(1.03, 1.03), 0.3).set_trans(Tween.TRANS_SINE)
+	_flash(Color(1, 1, 1, 0.28) if not is_death else Color(0.6, 0.05, 0.05, 0.45))
+	if not is_death:
+		var aff: Dictionary = opt.get("affinity", {})
+		for k in aff.keys():
+			_float_text("+%d %s" % [int(aff[k]), str(k)], Color(1.0, 0.88, 0.55))
+
+func _flash(color: Color) -> void:
+	var r := ColorRect.new()
+	r.color = color
+	r.set_anchors_preset(Control.PRESET_FULL_RECT)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(r)
+	var tw: Tween = r.create_tween()
+	tw.tween_property(r, "modulate:a", 0.0, 0.45)
+	tw.tween_callback(r.queue_free)
+
+func _float_text(text: String, color: Color) -> void:
+	var lab := Label.new()
+	lab.text = text
+	lab.add_theme_font_size_override("font_size", 40)
+	lab.add_theme_color_override("font_color", color)
+	lab.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+	lab.add_theme_constant_override("shadow_offset_x", 2)
+	lab.add_theme_constant_override("shadow_offset_y", 3)
+	lab.position = Vector2(960 - 120.0, 300.0)
+	lab.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(lab)
+	var tw: Tween = lab.create_tween().set_parallel(true)
+	tw.tween_property(lab, "position:y", 200.0, 1.0).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(lab, "modulate:a", 0.0, 1.0)
+	tw.chain().tween_callback(lab.queue_free)
+
+func _shake(strength: float = 14.0) -> void:
+	var tw: Tween = create_tween()
+	var x0: float = position.x
+	tw.tween_property(self, "position:x", x0 + strength, 0.05)
+	tw.tween_property(self, "position:x", x0 - strength, 0.08)
+	tw.tween_property(self, "position:x", x0 + strength * 0.5, 0.08)
+	tw.tween_property(self, "position:x", x0, 0.08)
 
 func _process(delta: float) -> void:
 	if not typing:
@@ -318,9 +386,12 @@ func _on_choice(opt: Dictionary) -> void:
 		hint.visible = false
 		return
 	if opt.has("death"):
+		_choice_stage_react(opt)
+		_shake(18.0)
 		_die(str(opt["death"]))
 		return
 	sfx_select.play()
+	_choice_stage_react(opt)
 	for k in (opt.get("affinity", {}) as Dictionary).keys():
 		affinity[k] = int(affinity.get(k, 0)) + int(opt["affinity"][k])
 	_update_affinity()
