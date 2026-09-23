@@ -37,6 +37,16 @@ const SPEAKER_COLOR := {
 @onready var hint: Label = $Dialogue/VBox/Hint
 @onready var choices_box: VBoxContainer = $Dialogue/VBox/Choices
 @onready var loc_label: Label = $LocationTag
+@onready var bgm_main: AudioStreamPlayer = $BGMMain
+@onready var bgm_tense: AudioStreamPlayer = $BGMTense
+@onready var sfx_advance: AudioStreamPlayer = $SFXAdvance
+@onready var sfx_select: AudioStreamPlayer = $SFXSelect
+@onready var sfx_mono: AudioStreamPlayer = $SFXMono
+@onready var sfx_chapter: AudioStreamPlayer = $SFXChapter
+@onready var sfx_death: AudioStreamPlayer = $SFXDeath
+@onready var sfx_clear: AudioStreamPlayer = $SFXClear
+var _last_chapter: String = ""
+var _tense_on: bool = false
 
 func _ready() -> void:
 	_load_story()
@@ -49,8 +59,41 @@ func _load_story() -> void:
 	idx = 0
 	affinity = {"求知": 0, "体面": 0, "因果": 0}
 	current_bg = ""
+	_last_chapter = ""
+	_tense_on = false
 	_update_affinity()
 	_show(idx)
+	_play_bgm(false)
+
+func _play_bgm(tense: bool) -> void:
+	if tense == _tense_on and (bgm_main.playing or bgm_tense.playing):
+		return
+	_tense_on = tense
+	if tense:
+		bgm_main.stop()
+		if not bgm_tense.playing:
+			bgm_tense.play()
+	else:
+		bgm_tense.stop()
+		if not bgm_main.playing:
+			bgm_main.play()
+
+func _is_tense_scene(s: Dictionary) -> bool:
+	var ch: String = str(s.get("chapter", ""))
+	if s.get("mono", false):
+		var t: String = str(s.get("mono_title", ""))
+		return "预警" in t
+	if opt_death_ahead(s):
+		return true
+	return ch in ["第六章 突然的劫杀", "第七章 六旬老汉大显威风", "第八章 总有人想害我"]
+
+func opt_death_ahead(s: Dictionary) -> bool:
+	if not s.has("choice"):
+		return false
+	for opt in s["choice"]:
+		if (opt as Dictionary).has("death"):
+			return true
+	return false
 
 func _update_affinity() -> void:
 	aff_label.text = "求知 %d   体面 %d   因果 %d" % [affinity["求知"], affinity["体面"], affinity["因果"]]
@@ -95,8 +138,14 @@ func _show(i: int) -> void:
 	_clear_mono_choices()
 	var s: Dictionary = scenes[i]
 	mono_layer.visible = bool(s.get("mono", false))
+	_play_bgm(_is_tense_scene(s))
+	var ch0: String = str(s.get("chapter", ""))
+	if ch0 != "" and ch0 != _last_chapter and not s.get("mono", false):
+		_last_chapter = ch0
+		sfx_chapter.play()
 	if mono_layer.visible:
 		bg.modulate = Color(1, 1, 1, 1)
+		sfx_mono.play()
 		mono_title.text = str(s.get("mono_title", "【 独白 】"))
 		mono_text.text = str(s.get("text", ""))
 		mono_hint.text = "···"
@@ -230,6 +279,7 @@ func _advance() -> void:
 	if idx < scenes.size() - 1:
 		idx += 1
 		hint.text = "···"
+		sfx_advance.play()
 		_show(idx)
 
 func _on_choice(opt: Dictionary) -> void:
@@ -237,6 +287,8 @@ func _on_choice(opt: Dictionary) -> void:
 		_load_story()
 		return
 	if bool(opt.get("ending", false)):
+		sfx_clear.play()
+		_play_bgm(false)
 		speaker.text = "系统"
 		speaker.add_theme_color_override("font_color", SPEAKER_COLOR["系统"])
 		full_text = "通关！属性：%s\n再开一局请重进。" % [str(affinity)]
@@ -249,6 +301,7 @@ func _on_choice(opt: Dictionary) -> void:
 	if opt.has("death"):
 		_die(str(opt["death"]))
 		return
+	sfx_select.play()
 	for k in (opt.get("affinity", {}) as Dictionary).keys():
 		affinity[k] = int(affinity.get(k, 0)) + int(opt["affinity"][k])
 	_update_affinity()
@@ -270,6 +323,8 @@ func _die(reason: String) -> void:
 	for c in stage.get_children():
 		c.queue_free()
 	mono_layer.visible = false
+	_play_bgm(false)
+	sfx_death.play()
 	bg.modulate = Color(0.35, 0.05, 0.05, 1.0)
 	speaker.text = "☠ 你死了"
 	speaker.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))

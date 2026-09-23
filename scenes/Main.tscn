@@ -1,10 +1,18 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/dialogue_bg.png" id="2"]
 [ext_resource type="Texture2D" path="res://assets/ui/topbar_bg.png" id="3"]
 [ext_resource type="Texture2D" path="res://assets/ui/nameplate.png" id="4"]
 [ext_resource type="Texture2D" path="res://assets/ui/choice_bg.png" id="5"]
+[ext_resource type="AudioStream" path="res://assets/audio/bgm_main.wav" id="6"]
+[ext_resource type="AudioStream" path="res://assets/audio/bgm_tense.wav" id="7"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_advance.wav" id="8"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_select.wav" id="9"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_mono.wav" id="10"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_chapter.wav" id="11"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_death.wav" id="12"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_clear.wav" id="13"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTex_dlg"]
 texture = ExtResource("2")
@@ -257,3 +265,35 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.55)
 theme_override_font_sizes/font_size = 18
 text = "···"
 horizontal_alignment = 2
+
+[node name="BGMMain" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6")
+volume_db = -10.0
+
+[node name="BGMTense" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7")
+volume_db = -12.0
+
+[node name="SFXAdvance" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8")
+volume_db = -6.0
+
+[node name="SFXSelect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9")
+volume_db = -6.0
+
+[node name="SFXMono" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10")
+volume_db = -8.0
+
+[node name="SFXChapter" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11")
+volume_db = -8.0
+
+[node name="SFXDeath" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12")
+volume_db = -4.0
+
+[node name="SFXClear" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13")
+volume_db = -6.0
