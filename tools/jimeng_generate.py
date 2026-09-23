@@ -1,84 +1,76 @@
 #!/usr/bin/env python3
-"""即梦 Seedream 生图（火山方舟 Ark）：文本 -> 国风立绘/背景.
+"""即梦 Seedream 4.6（火山视觉 CVSync2Async）：AK/SK -> 国风立绘/背景.
 
 用法：
-  export VOLC_API_KEY='你的火山方舟API Key'
-  python3 tools/jimeng_generate.py --prompt "古风少女..." --size 880x1320 --output /tmp/test.png
-  python3 tools/jimeng_generate.py --list-models
+  python3 tools/jimeng_generate.py --prompt "..." --width 880 --height 1320 --output /tmp/x.png
   python3 tools/jimeng_generate.py --batch docs/art/JIMENG_JOBS.json
+  AK/SK 从环境 VOLC_AK / VOLC_SK 读（存 /tmp/.volc_ak /tmp/.volc_sk 亦可）。
 
-接口：POST https://ark.cn-beijing.volces.com/api/v3/images/generations
-  Header Authorization: Bearer <key>
-  body: {model, prompt, size, response_format=url, watermark=false}
-模型默认 doubao-seedream-4-0-250828（1K/2K/4K，最稳）；
-4.6 产品见 https://docs.volcengine.com/docs/JimengAI/JimengAI-ImageGeneration46-ProductIntroduction?lang=zh，
-如控制台给你开了 4.6/4.5/5.0 就用 --model 切过去，参数同源。
+流程：cv_sync2async_submit_task(req_key=jimeng_seedream46_cvtob) -> 轮询 get_result -> binary_data_base64 落盘。
 """
-import os, sys, json, argparse, pathlib, urllib.request
+import os, sys, json, time, base64, argparse, pathlib
 
-BASE = "https://ark.cn-beijing.volces.com/api/v3"
-DEFAULT_MODEL = "doubao-seedream-4-0-250828"
+REQ_KEY = "jimeng_seedream46_cvtob"
 
-def api_post(path: str, body: dict, api_key: str, timeout=300) -> dict:
-    data = json.dumps(body).encode()
-    req = urllib.request.Request(BASE + path, data=data, headers={
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-    })
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return json.loads(r.read().decode())
+def creds():
+    ak = os.environ.get("VOLC_AK", "")
+    sk = os.environ.get("VOLC_SK", "")
+    if not ak and pathlib.Path("/tmp/.volc_ak").exists():
+        ak = pathlib.Path("/tmp/.volc_ak").read_text().strip()
+    if not sk and pathlib.Path("/tmp/.volc_sk").exists():
+        sk = pathlib.Path("/tmp/.volc_sk").read_text().strip()
+    if not ak or not sk:
+        print("缺 AK/SK：export VOLC_AK=... VOLC_SK=...")
+        sys.exit(2)
+    return ak, sk
 
-def list_models(api_key: str) -> None:
-    req = urllib.request.Request(BASE + "/models", headers={"Authorization": f"Bearer {api_key}"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        print(r.read().decode()[:4000])
+def svc(ak, sk):
+    from volcengine.visual.VisualService import VisualService
+    s = VisualService()
+    s.set_ak(ak)
+    s.set_sk(sk)
+    return s
 
-def generate(prompt: str, size: str, model: str, api_key: str, watermark=False) -> str:
-    body = {
-        "model": model,
+def gen_one(s, prompt: str, width: int, height: int, out: pathlib.Path) -> None:
+    resp = s.cv_sync2async_submit_task({
+        "req_key": REQ_KEY,
         "prompt": prompt,
-        "size": size,
-        "response_format": "url",
-        "watermark": watermark,
-    }
-    resp = api_post("/images/generations", body, api_key)
-    data = resp.get("data", [])
-    if not data or not data[0].get("url"):
-        raise RuntimeError(f"no image url: {resp}")
-    return data[0]["url"]
-
-def download(url: str, out: pathlib.Path) -> None:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120) as r, open(out, "wb") as f:
-        f.write(r.read())
-    print(f"OK {out} {out.stat().st_size}B")
+        "width": width, "height": height,
+    })
+    task_id = resp["data"]["task_id"]
+    print(f"  task {task_id} ...", flush=True)
+    for _ in range(40):
+        time.sleep(4)
+        r = s.cv_sync2async_get_result({"req_key": REQ_KEY, "task_id": task_id})
+        d = r.get("data", {})
+        st = d.get("status")
+        if st == "done":
+            b64 = d["binary_data_base64"][0]
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_bytes(base64.b64decode(b64))
+            print(f"OK {out} {out.stat().st_size}B")
+            return
+        if st in ("failed", "error"):
+            raise RuntimeError(f"task failed: {r}")
+    raise RuntimeError(f"timeout {task_id}")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--prompt", default="")
-    ap.add_argument("--size", default="880x1320")
-    ap.add_argument("--model", default=DEFAULT_MODEL)
+    ap.add_argument("--width", type=int, default=880)
+    ap.add_argument("--height", type=int, default=1320)
     ap.add_argument("--output", default="")
     ap.add_argument("--batch", default="")
-    ap.add_argument("--list-models", action="store_true")
-    ap.add_argument("--api-key", default=os.environ.get("VOLC_API_KEY", ""))
-    ap.add_argument("--watermark", action="store_true")
     a = ap.parse_args()
-    if a.list_models:
-        if not a.api_key:
-            print("export VOLC_API_KEY='...'"); sys.exit(2)
-        list_models(a.api_key); sys.exit(0)
-    if not a.api_key:
-        print("先 export VOLC_API_KEY='你的火山方舟Key'"); sys.exit(2)
+    ak, sk = creds()
+    s = svc(ak, sk)
     if a.batch:
         jobs = json.loads(pathlib.Path(a.batch).read_text(encoding="utf-8"))
         for j in jobs:
-            url = generate(j["prompt"], j.get("size", "880x1320"), j.get("model", a.model), a.api_key, j.get("watermark", False))
-            print(f"URL {j['output']}: {url}")
-            download(url, pathlib.Path(j["output"]))
+            print(f"gen {j['output']}", flush=True)
+            w, h = map(int, j.get("size", "880x1320").split("x"))
+            gen_one(s, j["prompt"], w, h, pathlib.Path(j["output"]))
     else:
         if not a.prompt or not a.output:
             ap.print_help(); sys.exit(2)
-        url = generate(a.prompt, a.size, a.model, a.api_key, a.watermark)
-        print(f"URL: {url}")
-        download(url, pathlib.Path(a.output))
+        gen_one(s, a.prompt, a.width, a.height, pathlib.Path(a.output))
