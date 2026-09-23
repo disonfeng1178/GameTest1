@@ -1,0 +1,10 @@
+# Taste
+- Communicates in Simplified Chinese and prefers responses in Simplified Chinese. Confidence: 0.95
+- Prefers shortcut / rapid development approach that gets to a runnable playable demo quickly. Confidence: 0.85
+- Expects polished, production-quality visuals for game scenes/characters; explicitly rejects rough placeholder / simple stacking even when functional. Confidence: 0.7
+- Prefers splitting game development across specialized parallel roles (plot/level design vs assets/character UI vs gameplay logic) rather than single generalist. Confidence: 0.85
+- Wants to directly address a specific role/agent for targeted iteration with isolated handling (e.g., tell art role to adjust character UI). Confidence: 0.85
+- Uses Git/GitHub repo-backed workflow for versioning and multi-role coordination. Confidence: 0.9
+- Prefers simple, low-friction handling of credentials/setup, reusing what already works rather than complex multi-step flows. Confidence: 0.8
+- Prefers evaluating external agent skills for usefulness and distributing relevant skills to different specialized AIs by role rather than shared generic learning. Confidence: 0.75
+- Prefers ancient Chinese / archaic epic visual style with exquisite, Gujian Qitan-referenced character portraits that convey epic grandeur. Confidence: 0.9

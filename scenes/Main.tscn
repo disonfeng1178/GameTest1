@@ -1,22 +1,17 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/dialogue_bg.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/ui/topbar_bg.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/ui/nameplate.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/choice_bg.png" id="5"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.05, 0.06, 0.1, 0.82)
-border_width_left = 0
-border_width_top = 3
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color(0.85, 0.7, 0.45, 0.9)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-content_margin_left = 28.0
-content_margin_top = 14.0
-content_margin_right = 28.0
-content_margin_bottom = 14.0
-shadow_color = Color(0, 0, 0, 0.4)
-shadow_size = 8
+[sub_resource type="StyleBoxTexture" id="StyleBoxTex_dlg"]
+texture = ExtResource("2")
+content_margin_left = 90.0
+content_margin_top = 66.0
+content_margin_right = 90.0
+content_margin_bottom = 24.0
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -45,7 +40,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.18)
+color = Color(0, 0, 0, 0.22)
 
 [node name="Stage" type="Control" parent="."]
 layout_mode = 1
@@ -56,32 +51,54 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="StageShadow" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_top = 0.66
+anchor_right = 1.0
+anchor_bottom = 0.66
+offset_top = -40.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.35)
+
+[node name="TopBarBG" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 72.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 0
+
 [node name="TopBar" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 24.0
+offset_left = 84.0
 offset_top = 12.0
-offset_right = -24.0
-offset_bottom = 52.0
+offset_right = -48.0
+offset_bottom = 58.0
 grow_horizontal = 2
 mouse_filter = 2
-alignment = 0
+theme_override_constants/separation = 24
 
 [node name="Title" type="Label" parent="TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 0.95)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_colors/font_color = Color(0.98, 0.84, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 28
 text = "嗟仙 第一章"
 
 [node name="Affinity" type="Label" parent="TopBar"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.9, 0.6, 0.95)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_colors/font_color = Color(0.9, 0.78, 0.5, 0.95)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 22
@@ -92,47 +109,40 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -260.0
-offset_top = 90.0
-offset_right = 260.0
-offset_bottom = 130.0
+offset_left = -320.0
+offset_top = 100.0
+offset_right = 320.0
+offset_bottom = 146.0
 grow_horizontal = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_colors/font_color = Color(0.99, 0.88, 0.62, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
 theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 34
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1
 text = ""
 
 [node name="Dialogue" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
-anchor_top = 0.66
+anchor_top = 0.6
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 36.0
 offset_top = 10.0
-offset_right = -36.0
-offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+theme_override_styles/panel = SubResource("StyleBoxTex_dlg")
 
 [node name="VBox" type="VBoxContainer" parent="Dialogue"]
 layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Speaker" type="Label" parent="Dialogue/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 26
-text = "旁白"
+theme_override_constants/separation = 10
 
 [node name="Text" type="RichTextLabel" parent="Dialogue/VBox"]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.95, 0.92, 0.84, 1)
 theme_override_font_sizes/normal_font_size = 25
 theme_override_font_sizes/bold_font_size = 25
 fit_content = true
@@ -141,12 +151,45 @@ text = "text"
 
 [node name="Choices" type="VBoxContainer" parent="Dialogue/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="Hint" type="Label" parent="Dialogue/VBox"]
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_colors/font_color = Color(1, 1, 1, 0.6)
+theme_override_colors/font_color = Color(0.85, 0.72, 0.48, 0.7)
 theme_override_font_sizes/font_size = 18
 text = "···"
 horizontal_alignment = 2
+
+[node name="Nameplate" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_top = 0.6
+offset_left = 90.0
+offset_top = -12.0
+offset_right = 410.0
+offset_bottom = 56.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Speaker" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_top = 0.6
+offset_left = 130.0
+offset_top = -4.0
+offset_right = 380.0
+offset_bottom = 44.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.95, 0.82, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 26
+text = "旁白"
+horizontal_alignment = 1
+vertical_alignment = 1

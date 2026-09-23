@@ -12,21 +12,22 @@ var _accum: float = 0.0
 var current_bg: String = ""
 
 const CHAR_PATH := "res://assets/chars/%s.png"
+const CHOICE_BG := "res://assets/ui/choice_bg.png"
 const SPEAKER_COLOR := {
-	"旁白": Color(0.75, 0.78, 0.9),
+	"旁白": Color(0.82, 0.8, 0.72),
 	"店伙计": Color(0.95, 0.8, 0.55),
-	"老黄头": Color(0.95, 0.75, 0.5),
-	"萧索": Color(0.55, 0.8, 1.0),
-	"萧索（内心）": Color(0.55, 0.8, 1.0),
-	"女修": Color(0.6, 1.0, 0.85),
-	"系统": Color(1.0, 0.9, 0.5),
+	"老黄头": Color(0.92, 0.72, 0.48),
+	"萧索": Color(0.62, 0.82, 1.0),
+	"萧索（内心）": Color(0.62, 0.82, 1.0),
+	"女修": Color(0.65, 0.95, 0.82),
+	"系统": Color(0.98, 0.84, 0.5),
 }
 
 @onready var bg: TextureRect = $BG
 @onready var stage: Control = $Stage
 @onready var title_label: Label = $TopBar/Title
 @onready var aff_label: Label = $TopBar/Affinity
-@onready var speaker: Label = $Dialogue/VBox/Speaker
+@onready var speaker: Label = $Speaker
 @onready var text_label: RichTextLabel = $Dialogue/VBox/Text
 @onready var hint: Label = $Dialogue/VBox/Hint
 @onready var choices_box: VBoxContainer = $Dialogue/VBox/Choices
@@ -73,12 +74,25 @@ func _show(i: int) -> void:
 	tw.tween_property(loc_label, "modulate:a", 0.0, 0.6)
 	if s.has("choice"):
 		hint.visible = false
+		var choice_tex: Texture2D = load(CHOICE_BG)
 		for opt in s["choice"]:
 			var b := Button.new()
 			b.text = "◆  " + str(opt["label"])
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			b.add_theme_font_size_override("font_size", 24)
-			b.custom_minimum_size = Vector2(0, 52)
+			b.add_theme_color_override("font_color", Color(0.96, 0.9, 0.76))
+			b.add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.8))
+			b.custom_minimum_size = Vector2(1000, 64)
+			var sb := StyleBoxTexture.new()
+			sb.texture = choice_tex
+			sb.content_margin_left = 56.0
+			sb.content_margin_right = 20.0
+			sb.content_margin_top = 8.0
+			sb.content_margin_bottom = 8.0
+			b.add_theme_stylebox_override("normal", sb)
+			b.add_theme_stylebox_override("hover", sb)
+			b.add_theme_stylebox_override("pressed", sb)
+			b.add_theme_stylebox_override("focus", sb)
 			b.pressed.connect(_on_choice.bind(opt))
 			choices_box.add_child(b)
 		typing = false
@@ -111,13 +125,23 @@ func _spawn_chars(s: Dictionary) -> void:
 	var n: int = names.size()
 	for k in range(n):
 		var char_name: String = str(names[k])
+		var holder := Control.new()
+		holder.custom_minimum_size = Vector2(340, 560)
+		holder.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var shadow := ColorRect.new()
+		shadow.color = Color(0, 0, 0, 0.35)
+		shadow.position = Vector2(60, 500)
+		shadow.size = Vector2(220, 34)
+		shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		holder.add_child(shadow)
 		var tr := TextureRect.new()
 		tr.texture = load(CHAR_PATH % char_name)
 		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		tr.custom_minimum_size = Vector2(340, 510)
-		tr.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		holder.add_child(tr)
 		var pos_x: float
 		if n == 1:
 			pos_x = 470.0
@@ -125,19 +149,19 @@ func _spawn_chars(s: Dictionary) -> void:
 			pos_x = 280.0 if k == 0 else 660.0
 		else:
 			pos_x = 130.0 + k * 340.0
-		tr.position = Vector2(pos_x, 60)
-		tr.size = Vector2(340, 510)
+		holder.position = Vector2(pos_x, 60)
+		holder.size = Vector2(340, 560)
 		if focus != "" and char_name != focus:
-			tr.modulate = Color(0.45, 0.45, 0.5, 1.0)
+			holder.modulate = Color(0.45, 0.45, 0.5, 1.0)
 		else:
-			tr.modulate = Color(1, 1, 1, 0)
-		stage.add_child(tr)
+			holder.modulate = Color(1, 1, 1, 0)
+		stage.add_child(holder)
 		var tw: Tween = create_tween().set_parallel(true)
-		tw.tween_property(tr, "modulate:a", 1.0 if (focus == "" or char_name == focus) else 0.85, 0.4)
-		tw.tween_property(tr, "position:y", 40.0, 0.4).from(70.0)
+		tw.tween_property(holder, "modulate:a", 1.0 if (focus == "" or char_name == focus) else 0.85, 0.4)
+		tw.tween_property(holder, "position:y", 40.0, 0.4).from(70.0)
 		var target_scale := Vector2(1.04, 1.04) if (focus == "" or char_name == focus) else Vector2(0.96, 0.96)
-		tr.pivot_offset = Vector2(170, 510)
-		tw.tween_property(tr, "scale", target_scale, 0.4)
+		holder.pivot_offset = Vector2(170, 560)
+		tw.tween_property(holder, "scale", target_scale, 0.4)
 
 func _process(delta: float) -> void:
 	if not typing:
