@@ -17,10 +17,11 @@
 
 ## Skill 学习映射（各学各的）
 
-- `gameplay` 学 `agentic-gamedev-skills` 子集：`running-headless-godot` + `scaffolding-godot-mini-games`（搭/跑/导出规范）+ `maximizing-game-feel`（打击/反馈/转场）+ Godot 程序化音频（对话 blip/选项/氛围）。不学 web/crisp 相关。
-- `art` 学 `agentic-gamedev-skills` 子集：`directing-game-visuals`（层级/配色/构图/反馈）+ `styling-typography`（可读字体/标题/字号层级）。风格目标：上古史诗感，参考古剑奇谭人物肖像——端庄华贵、纹饰精细、质感厚重，不走 Q 版纸片风。
-- `plot` 学 `agentic-gamedev-skills` 子集：`exploring-game-design-space`（多分支发散）+ `stress-testing-game-concepts`（审分支逻辑/数值崩点）。另借鉴 `rpg-maker-agent` 的思路：干跑（dry-run）+ 跨文件一致性校验（角色/背景名/选项引用），但不装它（它是 RPG Maker MV/MZ JSON 专用，跟 Godot 无关）。
-- 跨角色新增 skill 需求，先记到本节，再由 lead 批准，避免各学各的重叠污染。
+- `gameplay` 学 `agentic-gamedev-skills` 子集：`running-headless-godot` + `scaffolding-godot-mini-games` + `maximizing-game-feel` + Godot 程序化音频。不学 web/crisp 相关。
+- `art` 学 `agentic-gamedev-skills` 子集：`directing-game-visuals` + `styling-typography`。风格目标：上古史诗感，参考古剑奇谭人物肖像，不走 Q 版纸片风。
+- `plot` 学 `agentic-gamedev-skills` 子集：`exploring-game-design-space` + `stress-testing-game-concepts`。另借鉴 `rpg-maker-agent` 的干跑 + 一致性校验思路，但不装它。
+- `plot` 主学 `novel-to-game`：`novel-game-analyze`（整本建 SOURCE_BIBLE，每个设定标章节出处，事实标 immutable/adaptable/open/conflicted）+ `game-concept`（多方向 PK + 硬 veto 毙线）+ `game-world-design`（关键选项必须在后文复述+改态度+改结局）。`art` 学 `game-art-direction`（生图走即梦 Seedream `tools/jimeng_generate.py`，见 `docs/art/JIMENG.md`；抠图走抠抠图 `tools/koukoutu_cutout.py`）。`gameplay` 学 `game-build`（白盒先验最大风险）+ `game-qa`（launch/render/input/coreLoop/outcome/restart 六项实跑）。注意：默认出网页版，Godot 构建以本机工具链为准；版权自理（嗟仙自学可玩，商用需授权）。
+- 跨角色新增 skill 需求，先记到本节，再由 lead 批准。
 
 ## Git 工作流
 
