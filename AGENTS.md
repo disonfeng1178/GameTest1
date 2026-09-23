@@ -15,6 +15,14 @@
 - 立绘：`assets/chars/<名>.png` 600x900，透明底，半身；背景 `assets/bg/*.png` 1280x720。
 - 玩法：`scripts/main.gd` 对外只读上述字段，新增字段必须先更新本契约并通知 plot。
 
+## Skill 学习映射（各学各的）
+
+- `gameplay` 学 `agentic-gamedev-skills` 子集：`running-headless-godot` + `scaffolding-godot-mini-games` + `maximizing-game-feel` + Godot 程序化音频。不学 web/crisp 相关。
+- `art` 学 `agentic-gamedev-skills` 子集：`directing-game-visuals` + `styling-typography`。风格目标：上古史诗感，参考古剑奇谭人物肖像，不走 Q 版纸片风。
+- `plot` 学 `agentic-gamedev-skills` 子集：`exploring-game-design-space` + `stress-testing-game-concepts`。另借鉴 `rpg-maker-agent` 的干跑 + 一致性校验思路，但不装它。
+- `plot` 主学 `novel-to-game`：`novel-game-analyze`（整本建 SOURCE_BIBLE，每个设定标章节出处，事实标 immutable/adaptable/open/conflicted）+ `game-concept`（多方向 PK + 硬 veto 毙线）+ `game-world-design`（关键选项必须在后文复述+改态度+改结局）。`art` 学 `game-art-direction`。`gameplay` 学 `game-build`（白盒先验最大风险）+ `game-qa`（launch/render/input/coreLoop/outcome/restart 六项实跑）。注意：默认出网页版，Godot 构建以本机工具链为准；版权自理（嗟仙自学可玩，商用需授权）。
+- 跨角色新增 skill 需求，先记到本节，再由 lead 批准。
+
 ## Git 工作流
 
 - 分支：`role/plot`、`role/art`、`role/gameplay`，都从 `main` 拉。只在自己目录+文档里改。
