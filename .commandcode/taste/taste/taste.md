@@ -8,3 +8,5 @@
 - Prefers simple, low-friction handling of credentials/setup, reusing what already works rather than complex multi-step flows. Confidence: 0.8
 - Prefers evaluating external agent skills for usefulness and distributing relevant skills to different specialized AIs by role rather than shared generic learning. Confidence: 0.75
 - Prefers ancient Chinese / archaic epic visual style with exquisite, Gujian Qitan-referenced character portraits that convey epic grandeur. Confidence: 0.9
+- Prefers challenging survival gameplay with real difficulty where wrong choices at key decision points cause death and full restart from the beginning. Confidence: 0.8
+- Prefers simple black-background white-text inner-monologue beats for opening background intro, post-choice reflection, and next-plot foreshadowing to build tension and anticipation. Confidence: 0.9
