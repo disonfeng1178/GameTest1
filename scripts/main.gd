@@ -13,6 +13,7 @@ var current_bg: String = ""
 
 const CHAR_PATH := "res://assets/chars/%s.png"
 const CHOICE_BG := "res://assets/ui/choice_bg.png"
+const STORY_PATH := "res://data/story.json"
 const SPEAKER_COLOR := {
 	"旁白": Color(0.82, 0.8, 0.72),
 	"店伙计": Color(0.95, 0.8, 0.55),
@@ -34,10 +35,16 @@ const SPEAKER_COLOR := {
 @onready var loc_label: Label = $LocationTag
 
 func _ready() -> void:
-	var f: FileAccess = FileAccess.open("res://data/ch1.json", FileAccess.READ)
+	_load_story()
+
+func _load_story() -> void:
+	var f: FileAccess = FileAccess.open(STORY_PATH, FileAccess.READ)
 	var data: Variant = JSON.parse_string(f.get_as_text())
 	scenes = data["scenes"]
 	title_label.text = str(data.get("title", ""))
+	idx = 0
+	affinity = {"求知": 0, "体面": 0, "因果": 0}
+	current_bg = ""
 	_update_affinity()
 	_show(idx)
 
@@ -65,7 +72,9 @@ func _show(i: int) -> void:
 	typing = true
 	_accum = 0.0
 	text_label.text = ""
-	loc_label.text = _loc_name(bg_path)
+	var ch: String = str(s.get("chapter", ""))
+	var loc: String = _loc_name(bg_path)
+	loc_label.text = (ch + " · " + loc) if ch != "" else loc
 	loc_label.visible = true
 	var tw: Tween = create_tween()
 	loc_label.modulate.a = 0.0
@@ -191,17 +200,68 @@ func _advance() -> void:
 		_show(idx)
 
 func _on_choice(opt: Dictionary) -> void:
+	if bool(opt.get("restart", false)):
+		_load_story()
+		return
+	if bool(opt.get("ending", false)):
+		speaker.text = "系统"
+		speaker.add_theme_color_override("font_color", SPEAKER_COLOR["系统"])
+		full_text = "通关！属性：%s\n再开一局请重进。" % [str(affinity)]
+		text_label.text = full_text
+		typing = false
+		for c in choices_box.get_children():
+			c.queue_free()
+		hint.visible = false
+		return
+	if opt.has("death"):
+		_die(str(opt["death"]))
+		return
 	for k in (opt.get("affinity", {}) as Dictionary).keys():
 		affinity[k] = int(affinity.get(k, 0)) + int(opt["affinity"][k])
 	_update_affinity()
 	speaker.text = "系统"
 	speaker.add_theme_color_override("font_color", SPEAKER_COLOR["系统"])
-	full_text = "你选择了【%s】\n属性已更新：%s\nDemo完，可重播第一章。" % [str(opt["label"]), str(affinity)]
+	full_text = "你选择了【%s】\n属性已更新：%s" % [str(opt["label"]), str(affinity)]
 	text_label.text = full_text
 	typing = false
 	for c in choices_box.get_children():
 		c.queue_free()
 	hint.visible = false
+
+func _die(reason: String) -> void:
+	for c in choices_box.get_children():
+		c.queue_free()
+	for c in stage.get_children():
+		c.queue_free()
+	bg.modulate = Color(0.35, 0.05, 0.05, 1.0)
+	speaker.text = "☠ 你死了"
+	speaker.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
+	full_text = reason
+	text_label.text = full_text
+	typing = false
+	hint.visible = false
+	var b := Button.new()
+	b.text = "◆  从头再来"
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_font_size_override("font_size", 24)
+	b.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
+	b.custom_minimum_size = Vector2(1000, 64)
+	var sb := StyleBoxTexture.new()
+	sb.texture = load(CHOICE_BG)
+	sb.content_margin_left = 56.0
+	sb.content_margin_right = 20.0
+	sb.content_margin_top = 8.0
+	sb.content_margin_bottom = 8.0
+	b.add_theme_stylebox_override("normal", sb)
+	b.add_theme_stylebox_override("hover", sb)
+	b.add_theme_stylebox_override("pressed", sb)
+	b.add_theme_stylebox_override("focus", sb)
+	b.pressed.connect(_on_restart)
+	choices_box.add_child(b)
+
+func _on_restart() -> void:
+	bg.modulate = Color(1, 1, 1, 1)
+	_load_story()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
