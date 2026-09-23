@@ -1,19 +1,17 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/dialogue_bg.png" id="2"]
 [ext_resource type="Texture2D" path="res://assets/ui/topbar_bg.png" id="3"]
-[ext_resource type="Texture2D" path="res://assets/ui/corner_tl.png" id="4"]
-[ext_resource type="Texture2D" path="res://assets/ui/corner_tr.png" id="5"]
-[ext_resource type="Texture2D" path="res://assets/ui/corner_bl.png" id="6"]
-[ext_resource type="Texture2D" path="res://assets/ui/corner_br.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/ui/nameplate.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/choice_bg.png" id="5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTex_dlg"]
 texture = ExtResource("2")
-content_margin_left = 56.0
-content_margin_top = 22.0
-content_margin_right = 56.0
-content_margin_bottom = 18.0
+content_margin_left = 90.0
+content_margin_top = 66.0
+content_margin_right = 90.0
+content_margin_bottom = 24.0
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -68,7 +66,7 @@ color = Color(0, 0, 0, 0.35)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 64.0
+offset_bottom = 72.0
 grow_horizontal = 2
 mouse_filter = 2
 texture = ExtResource("3")
@@ -79,10 +77,10 @@ stretch_mode = 0
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 48.0
-offset_top = 10.0
+offset_left = 84.0
+offset_top = 12.0
 offset_right = -48.0
-offset_bottom = 54.0
+offset_bottom = 58.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 24
@@ -112,9 +110,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -320.0
-offset_top = 96.0
+offset_top = 100.0
 offset_right = 320.0
-offset_bottom = 142.0
+offset_bottom = 146.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.99, 0.88, 0.62, 1)
@@ -128,7 +126,7 @@ text = ""
 [node name="Dialogue" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
-anchor_top = 0.62
+anchor_top = 0.6
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 10.0
@@ -138,16 +136,7 @@ theme_override_styles/panel = SubResource("StyleBoxTex_dlg")
 
 [node name="VBox" type="VBoxContainer" parent="Dialogue"]
 layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Speaker" type="Label" parent="Dialogue/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.98, 0.84, 0.55, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 28
-text = "旁白"
+theme_override_constants/separation = 10
 
 [node name="Text" type="RichTextLabel" parent="Dialogue/VBox"]
 custom_minimum_size = Vector2(0, 96)
@@ -162,7 +151,7 @@ text = "text"
 
 [node name="Choices" type="VBoxContainer" parent="Dialogue/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="Hint" type="Label" parent="Dialogue/VBox"]
 layout_mode = 2
@@ -172,64 +161,35 @@ theme_override_font_sizes/font_size = 18
 text = "···"
 horizontal_alignment = 2
 
-[node name="CornerTL" type="TextureRect" parent="."]
+[node name="Nameplate" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 10
-anchor_top = 0.62
-offset_left = 8.0
-offset_top = 18.0
-offset_right = 80.0
-offset_bottom = 90.0
+anchor_top = 0.6
+offset_left = 90.0
+offset_top = -12.0
+offset_right = 410.0
+offset_bottom = 56.0
 grow_horizontal = 2
 mouse_filter = 2
 texture = ExtResource("4")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CornerTR" type="TextureRect" parent="."]
+[node name="Speaker" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 10
-anchor_top = 0.62
-anchor_right = 1.0
-offset_left = -80.0
-offset_top = 18.0
-offset_right = -8.0
-offset_bottom = 90.0
-grow_horizontal = 0
+anchor_top = 0.6
+offset_left = 130.0
+offset_top = -4.0
+offset_right = 380.0
+offset_bottom = 44.0
+grow_horizontal = 2
 mouse_filter = 2
-texture = ExtResource("5")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="CornerBL" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = -80.0
-offset_right = 80.0
-offset_bottom = -8.0
-grow_vertical = 0
-mouse_filter = 2
-texture = ExtResource("6")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="CornerBR" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -80.0
-offset_top = -80.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 2
-texture = ExtResource("7")
-expand_mode = 1
-stretch_mode = 5
+theme_override_colors/font_color = Color(0.65, 0.95, 0.82, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 26
+text = "旁白"
+horizontal_alignment = 1
+vertical_alignment = 1
