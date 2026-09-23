@@ -47,8 +47,10 @@ const SPEAKER_COLOR := {
 @onready var sfx_clear: AudioStreamPlayer = $SFXClear
 var _last_chapter: String = ""
 var _tense_on: bool = false
+var _choice_done: bool = false
 
 func _ready() -> void:
+	GameLog.info("=== game start ===")
 	_load_story()
 
 func _load_story() -> void:
@@ -61,6 +63,8 @@ func _load_story() -> void:
 	current_bg = ""
 	_last_chapter = ""
 	_tense_on = false
+	_choice_done = false
+	GameLog.info("story loaded: %d scenes" % scenes.size())
 	_update_affinity()
 	_show(idx)
 	_play_bgm(false)
@@ -145,6 +149,7 @@ func _show(i: int) -> void:
 		c.queue_free()
 	_clear_mono_choices()
 	var s: Dictionary = scenes[i]
+	GameLog.info("show idx=%d speaker=%s mono=%s choice=%s" % [i, str(s.get("speaker", s.get("mono_title", "?"))), str(bool(s.get("mono", false))), str(s.has("choice"))])
 	mono_layer.visible = bool(s.get("mono", false))
 	_play_bgm(_is_tense_scene(s))
 	var ch0: String = str(s.get("chapter", ""))
@@ -361,12 +366,15 @@ func _advance() -> void:
 		hint.text = "▼ 点击 / 空格继续"
 		return
 	var s: Dictionary = scenes[idx]
-	if s.has("choice"):
+	if s.has("choice") and not _choice_done:
+		GameLog.warn("advance blocked: choice pending idx=%d" % idx)
 		return
 	if idx < scenes.size() - 1:
 		idx += 1
+		_choice_done = false
 		hint.text = "···"
 		sfx_advance.play()
+		GameLog.info("advance -> idx=%d" % idx)
 		_show(idx)
 
 func _on_choice(opt: Dictionary) -> void:
@@ -395,6 +403,7 @@ func _on_choice(opt: Dictionary) -> void:
 	for k in (opt.get("affinity", {}) as Dictionary).keys():
 		affinity[k] = int(affinity.get(k, 0)) + int(opt["affinity"][k])
 	_update_affinity()
+	GameLog.info("choice idx=%d label=%s affinity=%s" % [idx, str(opt.get("label", "")), str(affinity)])
 	mono_layer.visible = false
 	_clear_mono_choices()
 	speaker.text = "系统"
@@ -404,9 +413,13 @@ func _on_choice(opt: Dictionary) -> void:
 	typing = false
 	for c in choices_box.get_children():
 		c.queue_free()
-	hint.visible = false
+	hint.visible = true
+	_choice_done = true
+	hint.text = "▼ 已选择，点击继续"
+	GameLog.info("choice done idx=%d, click to continue" % idx)
 
 func _die(reason: String) -> void:
+	GameLog.err("DEATH idx=%d reason=%s" % [idx, reason])
 	for c in choices_box.get_children():
 		c.queue_free()
 	_clear_mono_choices()
