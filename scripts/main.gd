@@ -123,6 +123,14 @@ func _make_choice_button(opt: Dictionary) -> Button:
 	b.add_theme_stylebox_override("hover", sb)
 	b.add_theme_stylebox_override("pressed", sb)
 	b.add_theme_stylebox_override("focus", sb)
+	b.mouse_entered.connect(func() -> void:
+		var t: Tween = b.create_tween()
+		t.tween_property(b, "scale", Vector2(1.02, 1.02), 0.12)
+	)
+	b.mouse_exited.connect(func() -> void:
+		var t: Tween = b.create_tween()
+		t.tween_property(b, "scale", Vector2.ONE, 0.12)
+	)
 	b.pressed.connect(_on_choice.bind(opt))
 	return b
 
@@ -206,42 +214,46 @@ func _fade_bg(path: String) -> void:
 	tw.tween_callback(func() -> void:
 		bg.texture = load(path)
 		bg.modulate.a = 0.0
-		var tw2: Tween = create_tween()
+		bg.scale = Vector2(1.06, 1.06)
+		bg.pivot_offset = Vector2(960, 540)
+		var tw2: Tween = create_tween().set_parallel(true)
 		tw2.tween_property(bg, "modulate:a", 1.0, 0.45)
+		tw2.tween_property(bg, "scale", Vector2.ONE, 2.5).set_trans(Tween.TRANS_SINE)
 	)
 
 func _spawn_chars(s: Dictionary) -> void:
 	var names: Array = s.get("chars", [])
 	var focus: String = str(s.get("focus", ""))
 	var n: int = names.size()
+	var vw: float = 1920.0
 	for k in range(n):
 		var char_name: String = str(names[k])
 		var holder := Control.new()
-		holder.custom_minimum_size = Vector2(340, 560)
+		holder.custom_minimum_size = Vector2(300, 620)
 		holder.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var shadow := ColorRect.new()
 		shadow.color = Color(0, 0, 0, 0.35)
-		shadow.position = Vector2(60, 500)
-		shadow.size = Vector2(220, 34)
+		shadow.position = Vector2(55, 560)
+		shadow.size = Vector2(190, 30)
 		shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		holder.add_child(shadow)
 		var tr := TextureRect.new()
 		tr.texture = load(CHAR_PATH % char_name)
 		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		tr.custom_minimum_size = Vector2(340, 510)
+		tr.custom_minimum_size = Vector2(300, 560)
 		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		holder.add_child(tr)
 		var pos_x: float
 		if n == 1:
-			pos_x = 470.0
+			pos_x = vw / 2.0 - 150.0
 		elif n == 2:
-			pos_x = 280.0 if k == 0 else 660.0
+			pos_x = vw / 2.0 - 380.0 if k == 0 else vw / 2.0 + 80.0
 		else:
-			pos_x = 130.0 + k * 340.0
-		holder.position = Vector2(pos_x, 60)
-		holder.size = Vector2(340, 560)
+			pos_x = vw / 2.0 - float(n) * 170.0 + k * 340.0
+		holder.position = Vector2(pos_x, 130)
+		holder.size = Vector2(300, 620)
 		if focus != "" and char_name != focus:
 			holder.modulate = Color(0.45, 0.45, 0.5, 1.0)
 		else:
@@ -249,10 +261,17 @@ func _spawn_chars(s: Dictionary) -> void:
 		stage.add_child(holder)
 		var tw: Tween = create_tween().set_parallel(true)
 		tw.tween_property(holder, "modulate:a", 1.0 if (focus == "" or char_name == focus) else 0.85, 0.4)
-		tw.tween_property(holder, "position:y", 40.0, 0.4).from(70.0)
+		tw.tween_property(holder, "position:y", 110.0, 0.4).from(140.0)
 		var target_scale := Vector2(1.04, 1.04) if (focus == "" or char_name == focus) else Vector2(0.96, 0.96)
-		holder.pivot_offset = Vector2(170, 560)
+		holder.pivot_offset = Vector2(150, 620)
 		tw.tween_property(holder, "scale", target_scale, 0.4)
+		if focus == "" or char_name == focus:
+			_breathe(holder)
+
+func _breathe(holder: Control) -> void:
+	var tw: Tween = create_tween().set_loops()
+	tw.tween_property(holder, "position:y", 104.0, 2.2).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(holder, "position:y", 110.0, 2.2).set_trans(Tween.TRANS_SINE)
 
 func _process(delta: float) -> void:
 	if not typing:
