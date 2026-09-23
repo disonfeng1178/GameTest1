@@ -1,61 +1,433 @@
 {
   "title": "嗟仙 前十章·求生线",
   "scenes": [
-    {"chapter": "第一章 灵气不是气", "bg": "res://assets/bg/shop_sunset.png", "chars": [], "focus": "", "speaker": "旁白", "text": "谪仙国黄狗县，卤鸡脚店打烊时分。老黄头一顿鸡脚吃了五个时辰。"},
-    {"chapter": "第一章 灵气不是气", "bg": "res://assets/bg/shop_sunset.png", "chars": ["huoji", "laohuang"], "focus": "laohuang", "speaker": "老黄头", "text": "你们店主小索子呢？两年半前见过仙人后，就天天钻小黑屋。"},
-    {"chapter": "第一章 灵气不是气", "bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "灵气居然不是气体！穿越五年，理工脑子不够用了。无资质就不能认命吗？"},
-    {"chapter": "第一章 灵气不是气", "bg": "res://assets/bg/forest.png", "chars": ["nvxiu", "xiaosuo"], "focus": "nvxiu", "speaker": "女修", "text": "这五块灵石赔你！外加显灵纸，遇灵气就变色。记住，别露白。", "choice": [
-      {"label": "继续探索灵气本源", "affinity": {"求知": 10}},
-      {"label": "先把卤鸡脚店做大", "affinity": {"体面": 10}},
-      {"label": "记住女修的因果", "affinity": {"因果": 10}}
-    ]},
-    {"chapter": "第二章 好消息，你爹没了", "bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "", "speaker": "旁白", "text": "一枚灵石=县尉官位，你有五块。卖又不敢卖，用又用不了。"},
-    {"chapter": "第二章 好消息，你爹没了", "bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "找谁买官？随便打听一句，寻迹而来的人就能要了我的贱命。", "choice": [
-      {"label": "拿灵石找掮客买官（找死）", "death": "你前脚露白，后脚就被掮客带人黑吃黑。五块灵石易主，你埋进后山。【财不露白】——从头再来。"},
-      {"label": "苟住，继续研究灵气", "affinity": {"求知": 10}},
-      {"label": "先经营小店攒人脉", "affinity": {"体面": 10}}
-    ]},
-    {"chapter": "第三章 有爹不如无", "bg": "res://assets/bg/shop_sunset.png", "chars": ["laohuang", "xiaosuo"], "focus": "laohuang", "speaker": "老黄头", "text": "少爷！开店的十几两是我棺材本故意丢的。老爷朱福禄死了，正是你的天赐时机，跟我走！"},
-    {"chapter": "第三章 有爹不如无", "bg": "res://assets/bg/shop_sunset.png", "chars": ["huoji", "xiaosuo"], "focus": "xiaosuo", "speaker": "萧索", "text": "我穿过来就是孤儿，哪来的爹？你先从头讲，讲不清就别想带我走。", "choice": [
-      {"label": "认下老黄头，从长计议", "affinity": {"因果": 10}},
-      {"label": "先查朱家底细再说", "affinity": {"求知": 10}}
-    ]},
-    {"chapter": "第四章 投降越快，地位越高", "bg": "res://assets/bg/dark_room.png", "chars": ["laohuang", "xiaosuo"], "focus": "laohuang", "speaker": "老黄头", "text": "朱福禄十死无生任务陨落，按律发开脉丹。男修陨落，儿子优先——但朱家只剩六男五女，全是豺狼。"},
-    {"chapter": "第四章 投降越快，地位越高", "bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "十二分之一的机会，单枪匹马回去认亲，就是送菜。", "choice": [
-      {"label": "独自回朱家认亲抢丹（找死）", "death": "你刚报出名字，当晚就被后院妻妾毒死在柴房。朱家不认孤魂。【别单走】——从头再来。"},
-      {"label": "抱紧老黄头，投降要快姿势要帅", "affinity": {"体面": 10}},
-      {"label": "先算清六男五女的账", "affinity": {"求知": 10}}
-    ]},
-    {"chapter": "第五章 谁不想从龙有功", "bg": "res://assets/bg/forest.png", "chars": ["xiaosuo"], "focus": "", "speaker": "旁白", "text": "王郑吴道破：刘氏两子早被大夫人二夫人下蛊，活蹦乱跳只是为了安她的心，让她替人灭口。"},
-    {"chapter": "第五章 谁不想从龙有功", "bg": "res://assets/bg/forest.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "两边都在拿我当刀。谁赢我跟谁，但绝不先露底牌。", "choice": [
-      {"label": "两边讨好，绝不站死", "affinity": {"体面": 10}},
-      {"label": "记下蛊毒这条线", "affinity": {"因果": 10}}
-    ]},
-    {"chapter": "第六章 突然的劫杀", "bg": "res://assets/bg/forest.png", "chars": ["huoji", "xiaosuo"], "focus": "huoji", "speaker": "店伙计", "text": "东家，王郑吴目的不明，留在身边是个变数，要不支走他？"},
-    {"chapter": "第六章 突然的劫杀", "bg": "res://assets/bg/forest.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "他拿我当救命稻草，时时刻刻贴着。能被支走的人，演都不像。", "choice": [
-      {"label": "强行支走王郑吴（找死）", "death": "当晚劫杀就来了。你把唯一能打的支走，马车被围，只能引颈就戮。【留保镖】——从头再来。"},
-      {"label": "留下他，贴身观察", "affinity": {"求知": 10}}
-    ]},
-    {"chapter": "第七章 六旬老汉大显威风", "bg": "res://assets/bg/forest.png", "chars": [], "focus": "", "speaker": "旁白", "text": "二夫人管家朱六才拦路：前总教头，三十年前与朱五伦平分秋色。三十打手，人数相当。"},
-    {"chapter": "第七章 六旬老汉大显威风", "bg": "res://assets/bg/forest.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "若他还有七成实力，我们一个也跑不掉。只能让朱三高顶前面，我装死。"},
-    {"chapter": "第八章 总有人想害我", "bg": "res://assets/bg/forest.png", "chars": ["xiaosuo"], "focus": "", "speaker": "旁白", "text": "朱六才以王郑吴的秘密做饵，想让朱三高收力。王郑吴力竭，眼前已走马灯。"},
-    {"chapter": "第八章 总有人想害我", "bg": "res://assets/bg/forest.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索", "text": "别听蛊惑！这老狗太厉害，不用抓活的——全力配合王郑吴，剁死他！", "choice": [
-      {"label": "收力听秘密，抓活口（找死）", "death": "朱六才缓过一口气，一掌震碎王郑吴心脉，回手削掉你的头。好奇害死猫。【补刀要快】——从头再来。"},
-      {"label": "全力剁死，一个不留", "affinity": {"因果": 10}}
-    ]},
-    {"chapter": "第九章 还好有替身", "bg": "res://assets/bg/forest.png", "chars": ["huoji", "xiaosuo"], "focus": "huoji", "speaker": "店伙计", "text": "东家，前面路卡有捕快！刘氏一个妾室调不动捕令，这是大夫人二夫人的子！"},
-    {"chapter": "第九章 还好有替身", "bg": "res://assets/bg/forest.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索", "text": "化好武师妆还坐马车就是找死。下车扮徒弟，装朱六才的手下。", "choice": [
-      {"label": "报真名硬冲过去（找死）", "death": "捕快领班直接拿下：朱家逃子，赏银五十两。你被锁进囚车。【装孙子】——从头再来。"},
-      {"label": "下车扮徒弟混过去", "affinity": {"体面": 10}}
-    ]},
-    {"chapter": "第十章 不安分的老和尚", "bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "", "speaker": "旁白", "text": "朱四莫七连发射完，双手尽废任人宰割。捕快将至，寺庙就在身后，马车上还有老黄头和伙计。"},
-    {"chapter": "第十章 不安分的老和尚", "bg": "res://assets/bg/dark_room.png", "chars": ["xiaosuo"], "focus": "xiaosuo", "speaker": "萧索（内心）", "text": "怕死就别露头。护着众人退进寺，等捕快清场。", "choice": [
-      {"label": "露头去抢马车（找死）", "death": "一支流矢穿喉。你关心则乱，忘了自己最怕死。【苟住】——从头再来。"},
-      {"label": "退进寺庙等捕快", "affinity": {"求知": 10}}
-    ]},
-    {"chapter": "第十章·完", "bg": "res://assets/bg/shop_sunset.png", "chars": [], "focus": "", "speaker": "系统", "text": "【前十章·活下来了】开脉丹还没影，但你学会了：藏富、抱腿、留刀、补刀、装孙子、苟住。属性结算，敢再走一遍吗？", "choice": [
-      {"label": "再走一遍（重开）", "restart": true},
-      {"label": "通关结算（结束）", "ending": true}
-    ]}
+    {
+      "mono": true,
+      "mono_title": "【 开篇 】",
+      "text": "谪仙国，礼仙州。修仙者八岁前带走有资质者，剩下的，是芸芸众生。\n朱萧索，穿越五年，卤鸡脚店老板，无资质。\n他偏不认命。"
+    },
+    {
+      "chapter": "第一章 灵气不是气",
+      "bg": "res://assets/bg/shop_sunset.png",
+      "chars": [],
+      "focus": "",
+      "speaker": "旁白",
+      "text": "谪仙国黄狗县，卤鸡脚店打烊时分。老黄头一顿鸡脚吃了五个时辰。"
+    },
+    {
+      "chapter": "第一章 灵气不是气",
+      "bg": "res://assets/bg/shop_sunset.png",
+      "chars": [
+        "huoji",
+        "laohuang"
+      ],
+      "focus": "laohuang",
+      "speaker": "老黄头",
+      "text": "你们店主小索子呢？两年半前见过仙人后，就天天钻小黑屋。"
+    },
+    {
+      "chapter": "第一章 灵气不是气",
+      "bg": "res://assets/bg/dark_room.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索（内心）",
+      "text": "灵气居然不是气体！穿越五年，理工脑子不够用了。无资质就不能认命吗？"
+    },
+    {
+      "chapter": "第一章 灵气不是气",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "nvxiu",
+        "xiaosuo"
+      ],
+      "focus": "nvxiu",
+      "speaker": "女修",
+      "text": "这五块灵石赔你！外加显灵纸，遇灵气就变色。记住，别露白。",
+      "choice": [
+        {
+          "label": "继续探索灵气本源",
+          "affinity": {
+            "求知": 10
+          }
+        },
+        {
+          "label": "先把卤鸡脚店做大",
+          "affinity": {
+            "体面": 10
+          }
+        },
+        {
+          "label": "记住女修的因果",
+          "affinity": {
+            "因果": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 独白·选后 】",
+      "text": "灵石烫手，显灵纸发烫。\n你选的路，决定你是什么样的人。\n但记住——\n下一章，有人要死了。那个“爹”，会要你的命。"
+    },
+    {
+      "chapter": "第二章 好消息，你爹没了",
+      "bg": "res://assets/bg/dark_room.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "",
+      "speaker": "旁白",
+      "text": "一枚灵石=县尉官位，你有五块。卖又不敢卖，用又用不了。"
+    },
+    {
+      "chapter": "第二章 好消息，你爹没了",
+      "bg": "res://assets/bg/dark_room.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索（内心）",
+      "text": "找谁买官？随便打听一句，寻迹而来的人就能要了我的贱命。",
+      "choice": [
+        {
+          "label": "拿灵石找掮客买官（找死）",
+          "death": "你前脚露白，后脚就被掮客带人黑吃黑。五块灵石易主，你埋进后山。【财不露白】——从头再来。"
+        },
+        {
+          "label": "苟住，继续研究灵气",
+          "affinity": {
+            "求知": 10
+          }
+        },
+        {
+          "label": "先经营小店攒人脉",
+          "affinity": {
+            "体面": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 预警 】",
+      "text": "棺材本、亲爹、从天而降的少爷身份。\n天上掉馅饼时，地上一定有陷阱。\n下一章：认爹，就是认死。"
+    },
+    {
+      "chapter": "第三章 有爹不如无",
+      "bg": "res://assets/bg/shop_sunset.png",
+      "chars": [
+        "laohuang",
+        "xiaosuo"
+      ],
+      "focus": "laohuang",
+      "speaker": "老黄头",
+      "text": "少爷！开店的十几两是我棺材本故意丢的。老爷朱福禄死了，正是你的天赐时机，跟我走！"
+    },
+    {
+      "chapter": "第三章 有爹不如无",
+      "bg": "res://assets/bg/shop_sunset.png",
+      "chars": [
+        "huoji",
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索",
+      "text": "我穿过来就是孤儿，哪来的爹？你先从头讲，讲不清就别想带我走。",
+      "choice": [
+        {
+          "label": "认下老黄头，从长计议",
+          "affinity": {
+            "因果": 10
+          }
+        },
+        {
+          "label": "先查朱家底细再说",
+          "affinity": {
+            "求知": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 独白·选后 】",
+      "text": "老黄头把棺材本都押上了。\n这份情，重得接不住也得接。\n下一章：开脉丹现世，十二个人抢一颗。\n投降，要快。姿势，要帅。"
+    },
+    {
+      "chapter": "第四章 投降越快，地位越高",
+      "bg": "res://assets/bg/dark_room.png",
+      "chars": [
+        "laohuang",
+        "xiaosuo"
+      ],
+      "focus": "laohuang",
+      "speaker": "老黄头",
+      "text": "朱福禄十死无生任务陨落，按律发开脉丹。男修陨落，儿子优先——但朱家只剩六男五女，全是豺狼。"
+    },
+    {
+      "chapter": "第四章 投降越快，地位越高",
+      "bg": "res://assets/bg/dark_room.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索（内心）",
+      "text": "十二分之一的机会，单枪匹马回去认亲，就是送菜。",
+      "choice": [
+        {
+          "label": "独自回朱家认亲抢丹（找死）",
+          "death": "你刚报出名字，当晚就被后院妻妾毒死在柴房。朱家不认孤魂。【别单走】——从头再来。"
+        },
+        {
+          "label": "抱紧老黄头，投降要快姿势要帅",
+          "affinity": {
+            "体面": 10
+          }
+        },
+        {
+          "label": "先算清六男五女的账",
+          "affinity": {
+            "求知": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 预警 】",
+      "text": "六男五女，全是豺狼。\n后院的刀，比前山的妖风还冷。\n下一章：有人下蛊，有人装傻。\n站队，就是站生死。"
+    },
+    {
+      "chapter": "第五章 谁不想从龙有功",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "",
+      "speaker": "旁白",
+      "text": "王郑吴道破：刘氏两子早被大夫人二夫人下蛊，活蹦乱跳只是为了安她的心，让她替人灭口。"
+    },
+    {
+      "chapter": "第五章 谁不想从龙有功",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索（内心）",
+      "text": "两边都在拿我当刀。谁赢我跟谁，但绝不先露底牌。",
+      "choice": [
+        {
+          "label": "两边讨好，绝不站死",
+          "affinity": {
+            "体面": 10
+          }
+        },
+        {
+          "label": "记下蛊毒这条线",
+          "affinity": {
+            "因果": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 独白·选后 】",
+      "text": "蛊毒、灭口、借刀杀人。\n你谁也不信——对，活下去就靠这个。\n下一章：劫杀，今晚就来。\n保镖，一个都不能少。"
+    },
+    {
+      "chapter": "第六章 突然的劫杀",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "huoji",
+        "xiaosuo"
+      ],
+      "focus": "huoji",
+      "speaker": "店伙计",
+      "text": "东家，王郑吴目的不明，留在身边是个变数，要不支走他？"
+    },
+    {
+      "chapter": "第六章 突然的劫杀",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索（内心）",
+      "text": "他拿我当救命稻草，时时刻刻贴着。能被支走的人，演都不像。",
+      "choice": [
+        {
+          "label": "强行支走王郑吴（找死）",
+          "death": "当晚劫杀就来了。你把唯一能打的支走，马车被围，只能引颈就戮。【留保镖】——从头再来。"
+        },
+        {
+          "label": "留下他，贴身观察",
+          "affinity": {
+            "求知": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 预警 】",
+      "text": "王郑吴满身是谜，但刀是真的快。\n把刀支走的人，坟头草都三尺了。\n下一章：朱六才，六十岁的前总教头，亲自拦路。"
+    },
+    {
+      "chapter": "第七章 六旬老汉大显威风",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [],
+      "focus": "",
+      "speaker": "旁白",
+      "text": "二夫人管家朱六才拦路：前总教头，三十年前与朱五伦平分秋色。三十打手，人数相当。"
+    },
+    {
+      "chapter": "第七章 六旬老汉大显威风",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索（内心）",
+      "text": "若他还有七成实力，我们一个也跑不掉。只能让朱三高顶前面，我装死。"
+    },
+    {
+      "mono": true,
+      "mono_title": "【 独白·选后 】",
+      "text": "三十个打手，七成功力就能全灭你们。\n装死，是技术活。\n下一章：他拿秘密做饵，咬钩的都死了。"
+    },
+    {
+      "chapter": "第八章 总有人想害我",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "",
+      "speaker": "旁白",
+      "text": "朱六才以王郑吴的秘密做饵，想让朱三高收力。王郑吴力竭，眼前已走马灯。"
+    },
+    {
+      "chapter": "第八章 总有人想害我",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索",
+      "text": "别听蛊惑！这老狗太厉害，不用抓活的——全力配合王郑吴，剁死他！",
+      "choice": [
+        {
+          "label": "收力听秘密，抓活口（找死）",
+          "death": "朱六才缓过一口气，一掌震碎王郑吴心脉，回手削掉你的头。好奇害死猫。【补刀要快】——从头再来。"
+        },
+        {
+          "label": "全力剁死，一个不留",
+          "affinity": {
+            "因果": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 预警 】",
+      "text": "好奇心能杀人，活口能翻盘。\n刀，要快。心，要狠。\n下一章：捕快设卡，报真名就是报丧。"
+    },
+    {
+      "chapter": "第九章 还好有替身",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "huoji",
+        "xiaosuo"
+      ],
+      "focus": "huoji",
+      "speaker": "店伙计",
+      "text": "东家，前面路卡有捕快！刘氏一个妾室调不动捕令，这是大夫人二夫人的子！"
+    },
+    {
+      "chapter": "第九章 还好有替身",
+      "bg": "res://assets/bg/forest.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索",
+      "text": "化好武师妆还坐马车就是找死。下车扮徒弟，装朱六才的手下。",
+      "choice": [
+        {
+          "label": "报真名硬冲过去（找死）",
+          "death": "捕快领班直接拿下：朱家逃子，赏银五十两。你被锁进囚车。【装孙子】——从头再来。"
+        },
+        {
+          "label": "下车扮徒弟混过去",
+          "affinity": {
+            "体面": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 独白·选后 】",
+      "text": "马车坐不得，真名报不得。\n装孙子，是最高级的体面。\n下一章：最后一关，别露头。露头，就死。"
+    },
+    {
+      "chapter": "第十章 不安分的老和尚",
+      "bg": "res://assets/bg/dark_room.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "",
+      "speaker": "旁白",
+      "text": "朱四莫七连发射完，双手尽废任人宰割。捕快将至，寺庙就在身后，马车上还有老黄头和伙计。"
+    },
+    {
+      "chapter": "第十章 不安分的老和尚",
+      "bg": "res://assets/bg/dark_room.png",
+      "chars": [
+        "xiaosuo"
+      ],
+      "focus": "xiaosuo",
+      "speaker": "萧索（内心）",
+      "text": "怕死就别露头。护着众人退进寺，等捕快清场。",
+      "choice": [
+        {
+          "label": "露头去抢马车（找死）",
+          "death": "一支流矢穿喉。你关心则乱，忘了自己最怕死。【苟住】——从头再来。"
+        },
+        {
+          "label": "退进寺庙等捕快",
+          "affinity": {
+            "求知": 10
+          }
+        }
+      ]
+    },
+    {
+      "mono": true,
+      "mono_title": "【 独白·选后 】",
+      "text": "活下来了。\n藏富、抱腿、留刀、补刀、装孙子、苟住——\n这六个字，是你用六条命换来的。"
+    },
+    {
+      "chapter": "第十章·完",
+      "bg": "res://assets/bg/shop_sunset.png",
+      "chars": [],
+      "focus": "",
+      "speaker": "系统",
+      "text": "【前十章·活下来了】开脉丹还没影，但你学会了：藏富、抱腿、留刀、补刀、装孙子、苟住。属性结算，敢再走一遍吗？",
+      "choice": [
+        {
+          "label": "再走一遍（重开）",
+          "restart": true
+        },
+        {
+          "label": "通关结算（结束）",
+          "ending": true
+        }
+      ]
+    }
   ]
 }

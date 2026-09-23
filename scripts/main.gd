@@ -29,6 +29,10 @@ const SPEAKER_COLOR := {
 @onready var title_label: Label = $TopBar/Title
 @onready var aff_label: Label = $TopBar/Affinity
 @onready var speaker: Label = $Speaker
+@onready var mono_layer: Control = $MonoLayer
+@onready var mono_title: Label = $MonoLayer/Center/Title
+@onready var mono_text: Label = $MonoLayer/Center/Text
+@onready var mono_hint: Label = $MonoLayer/Center/Hint
 @onready var text_label: RichTextLabel = $Dialogue/VBox/Text
 @onready var hint: Label = $Dialogue/VBox/Hint
 @onready var choices_box: VBoxContainer = $Dialogue/VBox/Choices
@@ -51,12 +55,60 @@ func _load_story() -> void:
 func _update_affinity() -> void:
 	aff_label.text = "求知 %d   体面 %d   因果 %d" % [affinity["求知"], affinity["体面"], affinity["因果"]]
 
+func _clear_mono_choices() -> void:
+	var center: Control = mono_layer.get_node("Center")
+	for c in center.get_children():
+		if c is Button:
+			c.queue_free()
+	mono_hint.visible = true
+
+func _make_choice_button(opt: Dictionary) -> Button:
+	var b := Button.new()
+	b.text = "◆  " + str(opt["label"])
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_font_size_override("font_size", 24)
+	b.add_theme_color_override("font_color", Color(0.96, 0.9, 0.76))
+	b.add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.8))
+	b.custom_minimum_size = Vector2(1000, 64)
+	var sb := StyleBoxTexture.new()
+	sb.texture = load(CHOICE_BG)
+	sb.content_margin_left = 56.0
+	sb.content_margin_right = 20.0
+	sb.content_margin_top = 8.0
+	sb.content_margin_bottom = 8.0
+	b.add_theme_stylebox_override("normal", sb)
+	b.add_theme_stylebox_override("hover", sb)
+	b.add_theme_stylebox_override("pressed", sb)
+	b.add_theme_stylebox_override("focus", sb)
+	b.pressed.connect(_on_choice.bind(opt))
+	return b
+
+func _spawn_choices_in(s: Dictionary, parent: Control) -> void:
+	for opt in s["choice"]:
+		parent.add_child(_make_choice_button(opt))
+
 func _show(i: int) -> void:
 	for c in stage.get_children():
 		c.queue_free()
 	for c in choices_box.get_children():
 		c.queue_free()
+	_clear_mono_choices()
 	var s: Dictionary = scenes[i]
+	mono_layer.visible = bool(s.get("mono", false))
+	if mono_layer.visible:
+		bg.modulate = Color(1, 1, 1, 1)
+		mono_title.text = str(s.get("mono_title", "【 独白 】"))
+		mono_text.text = str(s.get("text", ""))
+		mono_hint.text = "···"
+		speaker.text = ""
+		text_label.text = ""
+		hint.visible = true
+		loc_label.visible = false
+		typing = false
+		if s.has("choice"):
+			mono_hint.visible = false
+			_spawn_choices_in(s, mono_layer.get_node("Center"))
+		return
 	var bg_path: String = str(s.get("bg", ""))
 	if bg_path != current_bg:
 		current_bg = bg_path
@@ -83,27 +135,8 @@ func _show(i: int) -> void:
 	tw.tween_property(loc_label, "modulate:a", 0.0, 0.6)
 	if s.has("choice"):
 		hint.visible = false
-		var choice_tex: Texture2D = load(CHOICE_BG)
 		for opt in s["choice"]:
-			var b := Button.new()
-			b.text = "◆  " + str(opt["label"])
-			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			b.add_theme_font_size_override("font_size", 24)
-			b.add_theme_color_override("font_color", Color(0.96, 0.9, 0.76))
-			b.add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.8))
-			b.custom_minimum_size = Vector2(1000, 64)
-			var sb := StyleBoxTexture.new()
-			sb.texture = choice_tex
-			sb.content_margin_left = 56.0
-			sb.content_margin_right = 20.0
-			sb.content_margin_top = 8.0
-			sb.content_margin_bottom = 8.0
-			b.add_theme_stylebox_override("normal", sb)
-			b.add_theme_stylebox_override("hover", sb)
-			b.add_theme_stylebox_override("pressed", sb)
-			b.add_theme_stylebox_override("focus", sb)
-			b.pressed.connect(_on_choice.bind(opt))
-			choices_box.add_child(b)
+			choices_box.add_child(_make_choice_button(opt))
 		typing = false
 		text_label.text = full_text
 	else:
@@ -219,6 +252,8 @@ func _on_choice(opt: Dictionary) -> void:
 	for k in (opt.get("affinity", {}) as Dictionary).keys():
 		affinity[k] = int(affinity.get(k, 0)) + int(opt["affinity"][k])
 	_update_affinity()
+	mono_layer.visible = false
+	_clear_mono_choices()
 	speaker.text = "系统"
 	speaker.add_theme_color_override("font_color", SPEAKER_COLOR["系统"])
 	full_text = "你选择了【%s】\n属性已更新：%s" % [str(opt["label"]), str(affinity)]
@@ -231,8 +266,10 @@ func _on_choice(opt: Dictionary) -> void:
 func _die(reason: String) -> void:
 	for c in choices_box.get_children():
 		c.queue_free()
+	_clear_mono_choices()
 	for c in stage.get_children():
 		c.queue_free()
+	mono_layer.visible = false
 	bg.modulate = Color(0.35, 0.05, 0.05, 1.0)
 	speaker.text = "☠ 你死了"
 	speaker.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
